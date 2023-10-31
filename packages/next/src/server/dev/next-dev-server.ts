@@ -62,15 +62,7 @@ import type { IncrementalCache } from '../lib/incremental-cache'
 import LRUCache from 'next/dist/compiled/lru-cache'
 import { getMiddlewareRouteMatcher } from '../../shared/lib/router/utils/middleware-route-matcher'
 
-// Load ReactDevOverlay only when needed
-let ReactDevOverlayImpl: FunctionComponent
-const ReactDevOverlay = (props: any) => {
-  if (ReactDevOverlayImpl === undefined) {
-    ReactDevOverlayImpl =
-      require('next/dist/compiled/@next/react-dev-overlay/dist/client').ReactDevOverlay
-  }
-  return ReactDevOverlayImpl(props)
-}
+
 
 export interface Options extends ServerOptions {
   /**
@@ -144,7 +136,7 @@ export default class DevServer extends Server {
     this.renderOpts.dev = true
     this.renderOpts.appDirDevErrorLogger = (err: any) =>
       this.logErrorWithOriginalStack(err, 'app-dir')
-    ;(this.renderOpts as any).ErrorDebug = ReactDevOverlay
+    ;//(this.renderOpts as any).ErrorDebug = ReactDevOverlay
     this.devReady = new Promise((resolve) => {
       this.setDevReady = resolve
     })

@@ -175,7 +175,9 @@ class Container extends React.Component<{
   }
 
   render() {
-    if (process.env.NODE_ENV === 'production') {
+    return null;
+  }
+   /* if (process.env.NODE_ENV === 'production') {
       return this.props.children
     } else {
       const {
@@ -183,7 +185,7 @@ class Container extends React.Component<{
       } = require('next/dist/compiled/@next/react-dev-overlay/dist/client')
       return <ReactDevOverlay>{this.props.children}</ReactDevOverlay>
     }
-  }
+  }*/
 }
 
 export async function initialize(opts: { devClient?: any } = {}): Promise<{

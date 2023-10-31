@@ -252,49 +252,7 @@ export function hydrate() {
   }
 
   if (isError) {
-    if (process.env.NODE_ENV !== 'production') {
-      // if an error is thrown while rendering an RSC stream, this will catch it in dev
-      // and show the error overlay
-      const ReactDevOverlay: typeof import('./components/react-dev-overlay/internal/ReactDevOverlay').default =
-        require('./components/react-dev-overlay/internal/ReactDevOverlay')
-          .default as typeof import('./components/react-dev-overlay/internal/ReactDevOverlay').default
-
-      const INITIAL_OVERLAY_STATE: typeof import('./components/react-dev-overlay/internal/error-overlay-reducer').INITIAL_OVERLAY_STATE =
-        require('./components/react-dev-overlay/internal/error-overlay-reducer').INITIAL_OVERLAY_STATE
-
-      const getSocketUrl: typeof import('./components/react-dev-overlay/internal/helpers/get-socket-url').getSocketUrl =
-        require('./components/react-dev-overlay/internal/helpers/get-socket-url')
-          .getSocketUrl as typeof import('./components/react-dev-overlay/internal/helpers/get-socket-url').getSocketUrl
-
-      let errorTree = (
-        <ReactDevOverlay state={INITIAL_OVERLAY_STATE} onReactError={() => {}}>
-          {reactEl}
-        </ReactDevOverlay>
-      )
-      const socketUrl = getSocketUrl(process.env.__NEXT_ASSET_PREFIX || '')
-      const socket = new window.WebSocket(`${socketUrl}/_next/webpack-hmr`)
-
-      // add minimal "hot reload" support for RSC errors
-      const handler = (event: MessageEvent) => {
-        let obj
-        try {
-          obj = JSON.parse(event.data)
-        } catch {}
-
-        if (!obj || !('action' in obj)) {
-          return
-        }
-
-        if (obj.action === 'serverComponentChanges') {
-          window.location.reload()
-        }
-      }
-
-      socket.addEventListener('message', handler)
-      ReactDOMClient.createRoot(appElement as any, options).render(errorTree)
-    } else {
       ReactDOMClient.createRoot(appElement as any, options).render(reactEl)
-    }
   } else {
     React.startTransition(() =>
       (ReactDOMClient as any).hydrateRoot(appElement, reactEl, {
